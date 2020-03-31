@@ -1,0 +1,26 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Build the Docker image
+        run: |
+          source .github/workflows/global-env.sh
+          docker build -t $REGISTRY_IMAGE:aliyun .
+      - name: Publish the Docker image
+        if: success()
+        env:
+          REGISTRY_USER: ${{ secrets.HUB_REGISTRY_USER }}
+          REGISTRY_PASSWORD: ${{ secrets.HUB_REGISTRY_PASSWORD }}
+        run: |
+          source .github/workflows/global-env.sh
+          echo $REGISTRY_IMAGE
+          docker login -u "$REGISTRY_USER" -p "$REGISTRY_PASSWORD"
+          docker push $REGISTRY_IMAGE:aliyun

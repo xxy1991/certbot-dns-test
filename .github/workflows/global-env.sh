@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+HUB_REGISTRY_IMAGE="xxy1991/certbot"
+REGISTRY_IMAGE=$HUB_REGISTRY_IMAGE
